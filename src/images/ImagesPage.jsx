@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import './ImagesPage.css'
 import CatIMG from "./cat.jsx"
+import { useDispatch, useSelector } from 'react-redux'
+import { updateLimit, updatePage } from './imagesInputReducerSlice'
 
 function ImagesPage() {
+  const dispatch = useDispatch()
   const [imageUrls, setImageUrls] = useState([])
 
-  const [inputValueLimit, setInputValueLimit] = useState(100)
-  const [inputValuePage, setInputValuePage] = useState(1)
+  const inputValueLimit = useSelector(state => state.images.limit)
+  const inputValuePage = useSelector(state => state.images.page)
 
   useEffect(() => {
     fetch(`https://picsum.photos/v2/list?page=${inputValuePage}&limit=${inputValueLimit}&quot`)
@@ -25,11 +28,11 @@ function ImagesPage() {
       <h1>Vite + React</h1>
 
       <input type="number" value={inputValueLimit} onChange={event => {
-        setInputValueLimit(event.target.value)
+        dispatch(updateLimit(event.target.value))
       }}/>
 
       <input type="number" value={inputValuePage} onChange={event => {
-        setInputValuePage(event.target.value)
+        dispatch(updatePage(event.target.value))
       }}/>
 
       <div className="card">
